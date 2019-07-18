@@ -25,6 +25,8 @@ SETTINGS = {
     "rqdata.username": "",
     "rqdata.password": "",
 
+    "tushare.token": "79e9f2dea97ee25a8d9abf5b5d4c8a3268d48d884f9faca9346a32ba",
+
     "database.driver": "sqlite",  # see database.Driver
     "database.database": "database.db",  # for sqlite, use this as filepath
     "database.host": "localhost",

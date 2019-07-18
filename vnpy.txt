@@ -1,0 +1,318 @@
+期权合约信息：https://tushare.pro/document/2?doc_id=158
+POST  HTTP/1.1
+Host: api.tushare.pro
+Content-Type: application/json
+cache-control: no-cache
+{
+    "api_name": "opt_basic",
+    "token": "79e9f2dea97ee25a8d9abf5b5d4c8a3268d48d884f9faca9346a32ba",
+    "params": {
+        "exchange": "SSE"
+    },
+    "fields": ""
+}
+
+response body:
+	{"request_id": "d4b9cccc37fb11e99dfd93f5ec444a721550989035677639", "code": 0, "msg": null, 
+		"data": {
+			"fields": 
+				["ts_code", "exchange", "name", "per_unit", "opt_code", "opt_type", "call_put", "exercise_type", "exercise_price", "s_month", "maturity_date", "list_price", "list_date", "delist_date", "last_edate", "last_ddate", "quote_unit", "min_price_chg"], 
+			"items": 
+				[
+					["10000869.SH", "SSE", "\u534e\u590f\u4e0a\u8bc150ETF\u671f\u67431705\u8ba4\u8d2d2.25", 10000.00000000, "OP510050.SH", "ETF\u671f\u6743", "C", "\u6b27\u5f0f", 2.25000000, "201705", "20170524", 0.09750000, "20170323", "20170524", "20170524", "20170525", "\u4eba\u6c11\u5e01\u5143", "0.0001"], 
+					["10000870.SH", "SSE", "\u534e\u590f\u4e0a\u8bc150ETF\u671f\u67431705\u8ba4\u8d2d2.30", 10000.00000000, "OP510050.SH", "ETF\u671f\u6743", "C", "\u6b27\u5f0f", 2.30000000, "201705", "20170524", 0.05860000, "20170323", "20170524", "20170524", "20170525", "\u4eba\u6c11\u5e01\u5143", "0.0001"], 
+					["10000871.SH", "SSE", "\u534e\u590f\u4e0a\u8bc150ETF\u671f\u67431705\u8ba4\u8d2d2.35", 10000.00000000, "OP510050.SH", "ETF\u671f\u6743", "C", "\u6b27\u5f0f", 2.35000000, "201705", "20170524", 0.03260000, "20170323", "20170524", "20170524", "20170525", "\u4eba\u6c11\u5e01\u5143", "0.0001"]
+					...
+				]
+		}
+	}
+
+
+期权日线行情：
+{
+    "api_name": "opt_daily",
+    "token": "79e9f2dea97ee25a8d9abf5b5d4c8a3268d48d884f9faca9346a32ba",
+    "params": {
+		"ts_code": "10000869.SH",
+		"trade_date": "",
+		"start_date": "",
+		"end_date": "",
+        "exchange": "SSE"
+    },
+    "fields": ""
+}
+
+response body:
+{
+    "request_id": "3a56c1e037ff11e98f59d00dd36710041550990494646355",
+    "code": 0,
+    "msg": null,
+    "data": {
+        "fields": [
+            "ts_code",
+            "trade_date",
+            "exchange",
+            "pre_settle",
+            "pre_close",
+            "open",
+            "high",
+            "low",
+            "close",
+            "settle",
+            "vol",
+            "amount",
+            "oi"
+        ],
+        "items": [
+            [
+                "10000869.SH",
+                "20170524",
+                "SSE",
+                0.153,
+                0.1429,
+                0.1466,
+                0.152,
+                0.1274,
+                0.1502,
+                0.149,
+                0.7896,
+                10928325,
+                3739
+            ],
+            [
+                "10000869.SH",
+                "20170523",
+                "SSE",
+                0.123,
+                0.1146,
+                0.1169,
+                0.1431,
+                0.1169,
+                0.1429,
+                0.153,
+                1.006,
+                13511279,
+                7857
+            ],
+			...
+		]
+	}
+}
+
+
+日线行情：
+{
+    "api_name": "fund_daily",
+    "token": "79e9f2dea97ee25a8d9abf5b5d4c8a3268d48d884f9faca9346a32ba",
+    "params": {
+		"ts_code": "510050.SH",
+		"trade_date": "",
+		"start_date": "20170323",
+		"end_date": "20171231"
+    },
+    "fields": ""
+}
+
+
+response body:
+{
+    "request_id": "7d014746381711e99dfd93f5ec444a721551000914415020",
+    "code": 0,
+    "msg": null,
+    "data": {
+        "fields": [
+            "ts_code",
+            "trade_date",
+            "pre_close",
+            "open",
+            "high",
+            "low",
+            "close",
+            "change",
+            "pct_chg",
+            "vol",
+            "amount"
+        ],
+        "items": [
+            [
+                "510050.SH",
+                "20171229",
+                2.855,
+                2.858,
+                2.874,
+                2.848,
+                2.858,
+                0.003,
+                0.1051,
+                2741056.61,
+                783342.458
+            ],
+            [
+                "510050.SH",
+                "20171228",
+                2.834,
+                2.838,
+                2.87,
+                2.829,
+                2.855,
+                0.021,
+                0.741,
+                4516756.8,
+                1288132.419
+            ],
+			...
+		]
+	}
+}
+
+
+
+1. jqdata 聚宽数据sdk 官网申请试用，免费试用一年，每天100万条调用； 期货一年3000，excel插件数据一年980
+https://www.joinquant.com/help/api/help?name=Option#获取期权分钟行情
+https://github.com/JoinQuant/jqdatasdk
+	JQdataServiceForVNPY
+		https://github.com/DingTobest/JQdataServiceForVNPY
+	50etf期权简单历史回测，包括选合约、与etf配对等操作（包含2015-2018年csv数据）需要在jq平台上运行的回测程序
+		https://github.com/blank008/OptionBackTest
+新浪上证ETF期权数据爬虫
+	https://github.com/wangsongiam/sina-stock-crawler
+通达信接口（网络包分析)
+	https://github.com/rainx/pytdx
+汇点期权接口（收费）
+	https://github.com/zhaoyu162/IsaacOptTrade
+tushare期权只有日线
+	https://github.com/waditu/tushare.js/blob/master/src/stock/trading.js
+米筐
+	ricequant、rqdata  3000-10000/年
+	https://github.com/vnpy/vnpy/tree/v1.9.2-LTS/examples/RQData （vnpy1.9.2自带）
+	
+
+	/*vp.py 在windows10 64位 python3运行
+安装mongodb
+安装Anaconda3 64位
+我的环境是64位win7  Anaconda5(py3.61-64)
+在vnpy的github主页上下载zip包，解压在一个目录下，假设在c盘根下，然后用2to3转换里面的py文件，网上有按目录批量转的，可以度一下。这步必须做，初步解决2到3的兼容性问题，主要是print方面的修改。
+再运行vn目录下的install.BAT,之后在Anaconda下会安装vn的核心包，目录 d:\Anaconda3\Lib\site-packages\vnpy-1.7.1-py3.6.egg\ 以下对这个路径简称为包
+http://www.vnpie.com/forum.php?mod=viewthread&tid=1891&highlight=3，板哥帖子的5楼，下载封装好的ctp接口，里面4个文件，用来替换d:\Anaconda3\Lib\site-packages\vnpy-1.7.1-py3.6.egg\vnpy\api\ctp\下同名的文件，这步很重要
+
+下载Boost，当前版本1.68
+解压到D:\Boost1_68_0，进入目录，运行bootstrap.bat vc12（vsstudio2013，如果是其它开发工具，选择vc71-vc141，或者gcc）
+正常完成后，根据提示运行.\b2，进行build
+
+https://blog.csdn.net/DoronLee/article/details/78425108   Boost.Python：安装使用
+bjam --with-python --prefix=d:\boost_1_68_0 stage toolset=msvc-12.0 variant=release link=shared address-model=64 threading=multi runtime-link=shared install
+*/
+
+Ubuntu 18.4
+	在虚拟机设置中，增加共享目录
+	sudo apt-get remove open-vm-tools卸载ubuntu带的open-vm-tools
+	运行“重新安装vmware tools”，ubuntu虚拟机将会加载一个虚拟的光驱。解压文件到自己的目录，使用subo运行vmware-install.pl
+	重启后，可以在mnt/hgfs看到共享目录
+	sudo passwd root  #ubuntu下获得管理员的权限  https://blog.csdn.net/ycl295644/article/details/44727205
+	如果要再次禁用 root 帐号，执行 sudo passwd -l root
+参照“https://github.com/vnpy/vnpy/wiki/Ubuntu环境安装”，安装vnpy Ubuntu版支持py3
+	ubuntu vmware安装
+	（如果是云主机安装， https://blog.csdn.net/lonelysky/article/details/54924156
+		sudo apt-get install xubuntu-desktop  
+		ubuntu使用lightdm图形管理器，需要配置
+		Vim编辑/etc/lightdm/lightdm.conf文件，将xserver-allow-tcp=false一行前面的注释去掉，并且改为xserver-allow-tcp=true
+		https://blog.csdn.net/junbujianwpl/article/details/52801952  按照这个使用Xstart能运行起来图形界面，XDMCP不行，应该是对网络要求较高，XDMCP机器是server，局域网可以）
+	ctrl+alt+T 进入管理员控制台
+	执行如下命令分别安装应用软件和pip的库
+		sudo apt-get install mongodb
+		sudo apt-get install libboost-all-dev
+		sudo apt-get install cmake
+		sudo apt-get install git 
+		sudo apt-get install libsnappy-dev
+		sudo apt-get install python-snappy	
+	准备编译工具
+		apt-get install build-essential
+		apt-get install python-dev
+	安装Anaconda3
+		./Anaconda3-5.2.0-Linux-x86_64.sh
+			Do you wish the installer to prepend the Anaconda3 install location to PATH in your /home/jiexiang/.bashrc ? [yes|no]
+		（如果卸载anaconda，直接删除/home/jiexiang/anaconda3目录， vi ~/.bashrc修改其中之前配置的PATH）
+	pip install --upgrade pip  #升级pip
+	使用vnpy-dev，支持py3的版本
+	可以运行install.sh安装，但会有问题，可以逐步运行：
+		编译vnpy的api，参照install.sh中的
+			pushd vnpy/api/ctp
+			bash build.sh
+			popd
+			......
+			编译各个api，需要修改api的vnpy/api/ctp/makefiles.txt， 
+				set(PYTHON_LIBRARY /home/jiexiang/anaconda3/lib)
+				set(PYTHON_INCLUDE_PATH /usr/include/python3.6m/) 等， 
+				或者cmake加上参数运行
+					-DPYTHON_INCLUDE_DIR=$(python -c "from distutils.sysconfig import get_python_inc; print(get_python_inc())")  \
+					-DPYTHON_LIBRARY=$(python -c "import distutils.sysconfig as sysconfig; print(sysconfig.get_config_var('LIBDIR'))")
+				运行时可能还会出现
+					from .vnctpmd import MdApi
+					ImportError: /usr/lib/x86_64-linux-gnu/libboost_python-py27.so.1.65.1: undefined symbol: PyClass_Type
+					是选择boost的python库版本错误，修改find_package(Boost 1.55.0 COMPONENTS python thread date_time system chrono REQUIRED)中的python为python3，再重新编译，将so文件拷贝到egg里
+				对file(self.filePath)语句的修改，file是2.7的用法，3已经用open()替换了，所以必须对这个处理，换成open(self.filePath,'r', encoding="utf-8")
+					"vnpy/trader/gateway/ibGateway/language/__init__.py"中的file(SETTING_FILENAME)修改为open(SETTING_FILENAME,'r', encoding="utf-8")
+				如果不用libboost-all-dev，而是下载最新boost1.68后自行编译所需的库，然后再build ctp等api（https://github.com/vnpy/vnpy/issues/416  https://blog.csdn.net/bodybo/article/details/79962814）
+						会提示提示boost_python3、boost_thread、boost_date_time、boost_system、boost_chrono找不到，在/usr/lib/x86_64-linux-gnu建立相关库的链接：
+							sudo ln -s /usr/local/lib/libboost_date_time.so /usr/lib/x86_64-linux-gnu/libboost_date_time.so 
+							jiexiang@ubuntu:~/vnpy-dev/vnpy/api/ctp$ ls /usr/lib/x86_64-linux-gnu/libboo*.* -l
+								lrwxrwxrwx 1 root root     33 Oct 31 22:58 /usr/lib/x86_64-linux-gnu/libboost_chrono.so -> /usr/local/lib/libboost_chrono.so
+								lrwxrwxrwx 1 root root     36 Oct 31 23:02 /usr/lib/x86_64-linux-gnu/libboost_date_time.so -> /usr/local/lib/libboost_date_time.so
+								lrwxrwxrwx 1 root root     35 Oct 31 22:54 /usr/lib/x86_64-linux-gnu/libboost_python3.so -> /usr/local/lib/libboost_python36.so
+								lrwxrwxrwx 1 root root     33 Oct 31 22:57 /usr/lib/x86_64-linux-gnu/libboost_system.so -> /usr/local/lib/libboost_system.so
+								lrwxrwxrwx 1 root root     33 Oct 31 22:57 /usr/lib/x86_64-linux-gnu/libboost_thread.so -> /usr/local/lib/libboost_thread.so
+							应该用libboost-all-dev也可以，运行会出现boost::python::error_already_set错误，应该是登录失败显示中文化，在boost中增加locale-> find_package(Boost 1.68.0 COMPONENTS python3 locale thread date_time system chrono  REQUIRED)
+							出现ImportError: .../ctp/vnctpmd.so: undefined symbol: _ZN5boost6locale4conv6to_utfIcEENSt7__cxx1112basic_stringIT_St11char_traitsIS5_ESaIS5_EEEPKcSB_RKNS4_IcS6_IcESaIcEEENS1_11method_typeE
+								sudo ln -s /usr/local/lib/libboost_locale.so /usr/lib/x86_64-linux-gnu/libboost_locale.so
+				尽量都用普通用户执行，anaconda也放到普通用户下，以免权限出现问题
+				第一次登录需要先修改密码，登录名不是手机号，是simnow中的traceid。 http://www.vnpie.com/forum.php?mod=viewthread&tid=2245
+		#Install Python Modules
+			pip install -r requirements.txt
+			pip install  snappy
+		手动安装64位talib py3.6，使用pip install ta-lib安装最新的Ta-lib python wrapper，如果没有安装ta-lib库，会报错
+			编译ta-lib， 下载ta-lib-0.4.0-src.tar.gz
+			windows下可以安装目录下的TA_Lib-0.4.17-cp36-cp36m-win_amd64.whl，或者去 https://www.lfd.uci.edu/~gohlke/pythonlibs/ 下载最新版。还没有测试
+				pip install xxxx.whl
+		连接postgresql数据库，需要安装驱动pip install psycopg2 , 还要修改setting.py的配置，端口默认是5432，数据库默认是postgres，用户也是postgres
+		python setup.py install
+
+		提示boost_python3、boost_thread、boost_date_time、boost_system、boost_chrono找不到
+			sudo ln -s /usr/local/lib/libboost_date_time.so /usr/lib/x86_64-linux-gnu/libboost_date_time.so 
+			jiexiang@ubuntu:~/vnpy-dev/vnpy/api/ctp$ ls /usr/lib/x86_64-linux-gnu/libboo*.* -l
+				lrwxrwxrwx 1 root root     33 Oct 31 22:58 /usr/lib/x86_64-linux-gnu/libboost_chrono.so -> /usr/local/lib/libboost_chrono.so
+				lrwxrwxrwx 1 root root     36 Oct 31 23:02 /usr/lib/x86_64-linux-gnu/libboost_date_time.so -> /usr/local/lib/libboost_date_time.so
+				lrwxrwxrwx 1 root root     35 Oct 31 22:54 /usr/lib/x86_64-linux-gnu/libboost_python3.so -> /usr/local/lib/libboost_python36.so
+				lrwxrwxrwx 1 root root     33 Oct 31 22:57 /usr/lib/x86_64-linux-gnu/libboost_system.so -> /usr/local/lib/libboost_system.so
+				lrwxrwxrwx 1 root root     33 Oct 31 22:57 /usr/lib/x86_64-linux-gnu/libboost_thread.so -> /usr/local/lib/libboost_thread.so
+
+		vnpy/price/crrCython和bsCython在linux里需要重新编译，使用python setup.py build_ext --inplace，编译完成后，将.so文件拷贝到site-packages里的相应目录中
+			pyd 是c编写的py模块，在py可见范围内，可以直接通过关键字import进行导入使用。
+				dll是windows平台动态库，py调用dll需要通过内嵌模块ctypes来间接调用
+				pyd的本质是dll，是直接的windows平台可执行文件。 
+			
+		vpnclient如何配置（连接上google访问没有成功）：https://blog.harshillodhi.co.in/softether-vpn-ubuntu-linux-client-configuration-behind-http-proxy/
+
+安装vnpy1.9.2在windows7 32位虚拟机
+	下载VNConda-1.9.2-Windows-x86
+	运行安装、执行，使用vnpy.com账号，jerry/xj7286
+	使用飞创期权，账户用现有的，或者110100000001/110100000002，密码不为空即可
+	OptionMaster配置为最新合约
+	安装mongo 3.2.22，才有32位的，之后都是64位
+	初始化mongo使用mongod --storageEngine=mmapv1 -dbpath "C:\Users\jiexiang\MongoDB\Data"
+	使用nosqlbooster4.7.5，支持32位mongodb管理，https://nosqlbooster.com/downloads
+	
+vscode运行vpny2.0（with python3）
+	拷贝vnpy/vnpy目录
+	点击左下角python环境，重新选择，会重新编译（或者Ctrl+Shift+p，p，python interpreter，选择之前安装的虚拟环境）
+	安装 rqdatac: pip install --pre --extra-index-url https://rquser:ricequant99@py.ricequant.com/simple/ rqdatac
+	windows10 64位安装talib，pip安装talib，pip install talib会提示“Exception: You probably meant to install and run ta-lib”，下载whl安装  #https://www.lfd.uci.edu/~gohlke/pythonlibs/#ta-lib
+	继续安装pyqt5、qdarkstyle、matplotlib、seaborn、peewee、jqdatasdk，运行run.py就可以启动起来了
+	
+	
+windows32位下安装完python3，ssl用不了，需要安装openssl  https://blog.csdn.net/u011426236/article/details/88864469
+
+
+
+ 
+
+ 

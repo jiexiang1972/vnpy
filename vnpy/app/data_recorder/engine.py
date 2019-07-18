@@ -75,6 +75,11 @@ class RecorderEngine(BaseEngine):
 
     def close(self):
         """"""
+        """最后一根k线生成"""
+        for vt_symbol in self.bar_recordings:
+            bg = self.get_bar_generator(vt_symbol)
+            bg.generate()
+
         self.active = False
 
         if self.thread.isAlive():

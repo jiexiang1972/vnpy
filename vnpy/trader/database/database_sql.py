@@ -16,7 +16,7 @@ from peewee import (
 )
 
 from vnpy.trader.constant import Exchange, Interval
-from vnpy.trader.object import BarData, TickData
+from vnpy.trader.object import BarData, TickData, OptionsBasic
 from vnpy.trader.utility import get_file_path
 from .database import BaseDatabaseManager, Driver
 
@@ -30,7 +30,7 @@ def init(driver: Driver, settings: dict):
     assert driver in init_funcs
 
     db = init_funcs[driver](settings)
-    bar, tick = init_models(db, driver)
+    bar, tick, basic = init_models(db, driver)
     return SqlManager(bar, tick)
 
 
@@ -319,9 +319,116 @@ def init_models(db: Database, driver: Driver):
                     for c in chunked(dicts, 50):
                         DbTickData.insert_many(c).on_conflict_replace().execute()
 
+    class DbOptionsBasic(ModelBase):
+        """
+        Options basic data for database storage.
+
+        Index is defined unique with symbol, exchange
+        """
+
+        id = AutoField()
+        symbol: str = CharField()
+        exchange: str = CharField()
+        name: str = CharField()  #合约名称
+        per_unit: str = CharField()  #合约单位 
+        opt_code: str = CharField()  #标准合约代码 
+        opt_type: str = CharField()  #合约类型 
+        call_put: str = CharField()  #期权类型 
+        exercise_type: str = CharField()  #行权方式 
+        exercise_price: float = FloatField()  #行权价格
+        s_month: str = CharField()  #结算月 
+        maturity_date: datetime = DateTimeField()  #到期日 
+        list_price: float = FloatField()  #挂牌基准价 
+        list_date: datetime = DateTimeField()  #开始交易日期 
+        delist_date: datetime = DateTimeField()  #最后交易日期 
+        last_edate: datetime = DateTimeField()  #最后行权日期 
+        last_ddate: datetime = DateTimeField()  #最后交割日期 
+        quote_unit: str = CharField()  #报价单位 
+        min_price_chg: str = CharField()  #最小价格波幅 
+
+        class Meta:
+            database = db
+            indexes = ((("symbol", "exchange"), True),)
+
+        @staticmethod
+        def from_basic(basic: OptionsBasic):
+            """
+            Generate DbBarData object from BarData.
+            """
+            db_basic = DbOptionsBasic
+
+            db_basic.symbol = basic.symbol
+            db_basic.exchange = basic.exchange.value
+            db_basic.name = basic.name
+            db_basic.per_unit = basic.per_unit 
+            db_basic.opt_code = basic.opt_code
+            db_basic.opt_type = basic.opt_type
+            db_basic.call_put = basic.call_put 
+            db_basic.exercise_type = basic.exercise_type
+            db_basic.exercise_price = basic.exercise_price
+            db_basic.s_month = basic.s_month 
+            db_basic.maturity_date = basic.maturity_date 
+            db_basic.list_price = basic.list_price 
+            db_basic.list_date = basic.list_date 
+            db_basic.delist_date = basic.delist_date 
+            db_basic.last_edate = basic.last_edate 
+            db_basic.last_ddate = basic.last_ddate 
+            db_basic.quote_unit = quote_unit 
+            db_basic.min_price_chg = basic.min_price_chg
+
+            return db_basic
+
+        def to_basic(self):
+            """
+            Generate OptionsBasic object from DbOpitonsBasic.
+            """
+            basic = OptionsBasic(
+                symbol=self.symbol,
+                exchange=Exchange(self.exchange),
+                name = self.name,
+                per_unit = self.per_unit, 
+                opt_code = self.opt_code,
+                opt_type = self.opt_type,
+                call_put = self.call_put, 
+                exercise_type = self.exercise_type,
+                exercise_price = self.exercise_price,
+                s_month = self.s_month,
+                maturity_date = self.maturity_date,
+                list_price = self.list_price,
+                list_date = self.list_date,
+                delist_date = self.delist_date, 
+                last_edate = self.last_edate,
+                last_ddate = self.last_ddate,
+                quote_unit = quote_unit,
+                min_price_chg = self.min_price_chg,
+                gateway_name="DB",
+            )
+            return basic
+
+        @staticmethod
+        def save_all(objs: List["DbOptionsBasic"]):
+            """
+            save a list of objects, update if exists.
+            """
+            dicts = [i.to_dict() for i in objs]
+            with db.atomic():
+                if driver is Driver.POSTGRESQL:
+                    for basic in dicts:
+                        DbOptionsBasic.insert(basic).on_conflict(
+                            update=basic,
+                            conflict_target=(
+                                DbOptionsBasic.symbol,
+                                DbOptionsBasic.exchange,
+                            ),
+                        ).execute()
+                else:
+                    for c in chunked(dicts, 50):
+                        DbOptionsBasic.insert_many(
+                            c).on_conflict_replace().execute()
+
     db.connect()
-    db.create_tables([DbBarData, DbTickData])
-    return DbBarData, DbTickData
+    db.create_tables([DbBarData, DbTickData, DbOptionsBasic])
+    return DbBarData, DbTickData, DbOptionsBasic
 
 
 class SqlManager(BaseDatabaseManager):
