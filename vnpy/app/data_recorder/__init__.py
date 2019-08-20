@@ -5,7 +5,7 @@ from vnpy.trader.constant import Direction
 from vnpy.trader.object import TickData, BarData, TradeData, OrderData
 from vnpy.trader.utility import BarGenerator, ArrayManager
 
-from .engine import RecorderEngine, APP_NAME
+from .engine import RecorderEngine, APP_NAME, EVENT_RECORDER_LOG
 
 
 class DataRecorderApp(BaseApp):
