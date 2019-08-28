@@ -30,8 +30,8 @@ def init(driver: Driver, settings: dict):
     assert driver in init_funcs
 
     db = init_funcs[driver](settings)
-    bar, tick, basic = init_models(db, driver)
-    return SqlManager(bar, tick)
+    bar, tick, opbasic = init_models(db, driver)
+    return SqlManager(bar, tick, opbasic)
 
 
 def init_sqlite(settings: dict):
@@ -147,6 +147,12 @@ def init_models(db: Database, driver: Driver):
                     for c in chunked(dicts, 50):
                         DbBarData.insert_many(
                             c).on_conflict_replace().execute()
+
+        @staticmethod
+        def db_close():
+            if not db.is_closed():
+                print('DB connection is to be closed...')
+                db.close()
 
     class DbTickData(ModelBase):
         """
@@ -351,38 +357,38 @@ def init_models(db: Database, driver: Driver):
             indexes = ((("symbol", "exchange"), True),)
 
         @staticmethod
-        def from_basic(basic: OptionsBasic):
+        def from_opbasic(opbasic: OptionsBasic):
             """
             Generate DbBarData object from BarData.
             """
-            db_basic = DbOptionsBasic
+            db_opbasic = DbOptionsBasic
 
-            db_basic.symbol = basic.symbol
-            db_basic.exchange = basic.exchange.value
-            db_basic.name = basic.name
-            db_basic.per_unit = basic.per_unit 
-            db_basic.opt_code = basic.opt_code
-            db_basic.opt_type = basic.opt_type
-            db_basic.call_put = basic.call_put 
-            db_basic.exercise_type = basic.exercise_type
-            db_basic.exercise_price = basic.exercise_price
-            db_basic.s_month = basic.s_month 
-            db_basic.maturity_date = basic.maturity_date 
-            db_basic.list_price = basic.list_price 
-            db_basic.list_date = basic.list_date 
-            db_basic.delist_date = basic.delist_date 
-            db_basic.last_edate = basic.last_edate 
-            db_basic.last_ddate = basic.last_ddate 
-            db_basic.quote_unit = quote_unit 
-            db_basic.min_price_chg = basic.min_price_chg
+            db_opbasic.symbol = opbasic.symbol
+            db_opbasic.exchange = opbasic.exchange.value
+            db_opbasic.name = opbasic.name
+            db_opbasic.per_unit = opbasic.per_unit 
+            db_opbasic.opt_code = opbasic.opt_code
+            db_opbasic.opt_type = opbasic.opt_type
+            db_opbasic.call_put = opbasic.call_put 
+            db_opbasic.exercise_type = opbasic.exercise_type
+            db_opbasic.exercise_price = opbasic.exercise_price
+            db_opbasic.s_month = opbasic.s_month 
+            db_opbasic.maturity_date = opbasic.maturity_date 
+            db_opbasic.list_price = opbasic.list_price 
+            db_opbasic.list_date = opbasic.list_date 
+            db_opbasic.delist_date = opbasic.delist_date 
+            db_opbasic.last_edate = opbasic.last_edate 
+            db_opbasic.last_ddate = opbasic.last_ddate 
+            db_opbasic.quote_unit = opbasic.quote_unit 
+            db_opbasic.min_price_chg = opbasic.min_price_chg
 
-            return db_basic
+            return db_opbasic
 
-        def to_basic(self):
+        def to_opbasic(self):
             """
             Generate OptionsBasic object from DbOpitonsBasic.
             """
-            basic = OptionsBasic(
+            opbasic = OptionsBasic(
                 symbol=self.symbol,
                 exchange=Exchange(self.exchange),
                 name = self.name,
@@ -403,7 +409,7 @@ def init_models(db: Database, driver: Driver):
                 min_price_chg = self.min_price_chg,
                 gateway_name="DB",
             )
-            return basic
+            return opbasic
 
         @staticmethod
         def save_all(objs: List["DbOptionsBasic"]):
@@ -413,9 +419,9 @@ def init_models(db: Database, driver: Driver):
             dicts = [i.to_dict() for i in objs]
             with db.atomic():
                 if driver is Driver.POSTGRESQL:
-                    for basic in dicts:
-                        DbOptionsBasic.insert(basic).on_conflict(
-                            update=basic,
+                    for opbasic in dicts:
+                        DbOptionsBasic.insert(opbasic).on_conflict(
+                            update=opbasic,
                             conflict_target=(
                                 DbOptionsBasic.symbol,
                                 DbOptionsBasic.exchange,
@@ -433,9 +439,10 @@ def init_models(db: Database, driver: Driver):
 
 class SqlManager(BaseDatabaseManager):
 
-    def __init__(self, class_bar: Type[Model], class_tick: Type[Model]):
+    def __init__(self, class_bar: Type[Model], class_tick: Type[Model], class_opbasic):
         self.class_bar = class_bar
         self.class_tick = class_tick
+        self.class_opbasic = class_opbasic
 
     def load_bar_data(
         self,
@@ -484,6 +491,10 @@ class SqlManager(BaseDatabaseManager):
         ds = [self.class_tick.from_tick(i) for i in datas]
         self.class_tick.save_all(ds)
 
+    def save_opbasic_data(self, datas: Sequence[OptionsBasic]):
+        ds = [self.class_opbasic.from_bar(i) for i in datas]
+        self.class_opbasic.save_all(ds)
+
     def get_newest_bar_data(
         self, symbol: str, exchange: "Exchange", interval: "Interval"
     ) -> Optional["BarData"]:
@@ -520,3 +531,8 @@ class SqlManager(BaseDatabaseManager):
     def clean(self, symbol: str):
         self.class_bar.delete().where(self.class_bar.symbol == symbol).execute()
         self.class_tick.delete().where(self.class_tick.symbol == symbol).execute()
+        self.class_opbasic.delete().where(self.class_opbasic.symbol == symbol).execute()
+
+    def close(self):
+        db = self.class_bar.db_close()
+        

@@ -84,6 +84,7 @@ class RecorderEngine(BaseEngine):
 
         if self.thread.isAlive():
             self.thread.join()
+            database_manager.close()
 
     def start(self):
         """"""
