@@ -63,8 +63,8 @@ def runParentProcess():
     """父进程运行函数"""
     print('启动行情记录守护父进程')
     
-    DAY_START = time(9, 25)         # 日盘启动和停止时间
-    DAY_END = time(16, 50)
+    DAY_START = time(9, 15)         # 日盘启动和停止时间
+    DAY_END = time(15, 5)
     NIGHT_START = time(23, 59)      # 夜盘启动和停止时间
     NIGHT_END = time(00, 00)
     
